@@ -35,7 +35,7 @@ export default function Login() {
             <FaUserShield className="text-white text-2xl" />
           </div>
           <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent mb-3">
-            Welcome Back
+            Welcome
           </h2>
           <p className="text-slate-300 text-lg">Sign in to continue your journey</p>
         </div>
