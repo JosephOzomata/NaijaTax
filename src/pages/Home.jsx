@@ -86,7 +86,7 @@ export default function Home() {
         {posts.length === 0 ? (
           <div className="text-center py-16 bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10">
             <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full flex items-center justify-center mx-auto mb-6">
-              <span className="text-2xl">📝</span>
+              <FaPlus className="text-2xl" />
             </div>
             <h3 className="text-2xl font-semibold text-white mb-3">No posts yet</h3>
             <p className="text-slate-400 mb-6">Be the first to share something amazing!</p>
