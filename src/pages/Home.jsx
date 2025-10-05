@@ -163,7 +163,7 @@ const Home = () => {
             // background: ["linear-gradient(45deg, #0d9488, #0891b2)", "linear-gradient(45deg, #0891b2, #0d9488)"]
           }}
           transition={{ duration: 2, repeat: Infinity }}
-          className="font-semibold bg-clip-text text-transparent bg-gradient-to-r from-teal-600 to-cyan-600"
+          className="font-semibold bg-clip-text text-White bg-gradient-to-r from-teal-600 to-cyan-600"
         >
           Nigeria
         </motion.span>
