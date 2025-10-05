@@ -5,7 +5,6 @@ import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Home from './pages/Home';
-// import Dashboard from './pages/Dashboard';
 import TaxApplication from './pages/TaxApplication';
 import Dashboard from './pages/DashBoard';
 import ToTop from './components/ToTop';
