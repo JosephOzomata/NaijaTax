@@ -160,7 +160,7 @@ const Home = () => {
         Easy tax preparation for individuals and small businesses in{" "}
         <motion.span
           animate={{ 
-            background: ["linear-gradient(45deg, #0d9488, #0891b2)", "linear-gradient(45deg, #0891b2, #0d9488)"]
+            // background: ["linear-gradient(45deg, #0d9488, #0891b2)", "linear-gradient(45deg, #0891b2, #0d9488)"]
           }}
           transition={{ duration: 2, repeat: Infinity }}
           className="font-semibold bg-clip-text text-transparent bg-gradient-to-r from-teal-600 to-cyan-600"
