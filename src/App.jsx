@@ -6,7 +6,8 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Home from './pages/Home';
 import TaxApplication from './pages/TaxApplication';
-import Dashboard from './pages/DashBoard';
+import Dashboard from './pages/Dashboard';
+// import Dashboard from './pages/Dashboard';
 import ToTop from './components/ToTop';
 
 function App() {
