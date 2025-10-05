@@ -1,162 +1,155 @@
+// src/pages/Login.jsx
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
-import { FaEnvelope, FaLock, FaArrowRight, FaSpinner, FaUserShield } from 'react-icons/fa';
+import { Link, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { FaEnvelope, FaLock, FaEye, FaEyeSlash, FaUser } from 'react-icons/fa';
 
-export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const Login = () => {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  
-  const { login } = useAuth();
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
     setError('');
-    setIsLoading(true);
 
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    const success = login(email, password);
-    if (!success) {
-      setError('Invalid email or password. Please check your credentials and try again.');
+    // Simple authentication
+    const users = JSON.parse(localStorage.getItem('taxUsers') || '[]');
+    const user = users.find(u => u.email === formData.email && u.password === formData.password);
+
+    if (user) {
+      localStorage.setItem('taxUser', JSON.stringify(user));
+      navigate('/dashboard');
+    } else {
+      setError('Invalid email or password');
     }
-    
-    setIsLoading(false);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        {/* Header Section */}
-        <div className="text-center">
-          <div className="mx-auto w-20 h-20 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-2xl flex items-center justify-center mb-6 shadow-2xl">
-            <FaUserShield className="text-white text-2xl" />
+    <div className="min-h-screen bg-gradient-to-br from-teal-100 via-white to-cyan-700 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="max-w-md w-full space-y-8 bg-white rounded-2xl shadow-xl p-8"
+      >
+        <div>
+          <div className="flex justify-center">
+            <FaUser className="h-12 w-12 text-teal-600" />
           </div>
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent mb-3">
-            Welcome
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            Sign in to NaijaTax
           </h2>
-          <p className="text-slate-300 text-lg">Sign in to continue your journey</p>
+          <p className="mt-2 text-center text-sm text-gray-600">
+            Or{' '}
+            <Link
+              to="/signup"
+              className="font-medium text-teal-600 hover:text-teal-500"
+            >
+              create a new account
+            </Link>
+          </p>
         </div>
+        
+        {error && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg"
+          >
+            {error}
+          </motion.div>
+        )}
 
-        {/* Login Form */}
-        <div className="bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 p-8 hover:bg-white/10 transition-all duration-300">
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            {error && (
-              <div className="bg-red-500/20 border border-red-400/50 text-red-200 px-4 py-4 rounded-xl backdrop-blur-sm">
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-red-400 rounded-full"></div>
-                  <span className="font-medium">Authentication Error</span>
-                </div>
-                <p className="text-sm mt-1 text-red-100">{error}</p>
-              </div>
-            )}
-
-            {/* Email Input */}
-            <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-semibold text-slate-200 flex items-center space-x-2">
-                <FaEnvelope className="text-cyan-400 text-sm" />
-                <span>Email Address</span>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <div className="space-y-4">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                Email Address
               </label>
               <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FaEnvelope className="h-5 w-5 text-gray-400" />
+                </div>
                 <input
                   id="email"
                   name="email"
                   type="email"
-                  autoComplete="email"
                   required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-4 pl-11 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all duration-300"
-                  placeholder="Enter your email address"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                  placeholder="Enter your email"
                 />
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FaEnvelope className="text-slate-400 text-lg" />
-                </div>
               </div>
             </div>
 
-            {/* Password Input */}
-            <div className="space-y-2">
-              <label htmlFor="password" className="text-sm font-semibold text-slate-200 flex items-center space-x-2">
-                <FaLock className="text-cyan-400 text-sm" />
-                <span>Password</span>
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                Password
               </label>
               <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FaLock className="h-5 w-5 text-gray-400" />
+                </div>
                 <input
                   id="password"
                   name="password"
-                  type="password"
-                  autoComplete="current-password"
+                  type={showPassword ? 'text' : 'password'}
                   required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-4 pl-11 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all duration-300"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                   placeholder="Enter your password"
                 />
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FaLock className="text-slate-400 text-lg" />
-                </div>
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <FaEyeSlash className="h-5 w-5 text-gray-400" />
+                  ) : (
+                    <FaEye className="h-5 w-5 text-gray-400" />
+                  )}
+                </button>
               </div>
             </div>
+          </div>
 
-
-            {/* Submit Button */}
-            <button
+          <div>
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               type="submit"
-              disabled={isLoading}
-              className="w-full bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 disabled:from-slate-600 disabled:to-slate-700 disabled:cursor-not-allowed text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] disabled:scale-100 group relative overflow-hidden"
+              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-lg font-medium rounded-lg text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition duration-300"
             >
-              <div className="relative z-10 flex items-center justify-center space-x-3">
-                {isLoading ? (
-                  <>
-                    <FaSpinner className="animate-spin text-lg" />
-                    <span className="text-lg">Signing In...</span>
-                  </>
-                ) : (
-                  <>
-                    <span className="text-lg">Continue to Account</span>
-                    <FaArrowRight className="text-sm group-hover:translate-x-1 transition-transform duration-300" />
-                  </>
-                )}
-              </div>
-              
-              {/* Shine effect */}
-              <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full group-hover:duration-1000 duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform" />
-            </button>
+              Sign in
+            </motion.button>
+          </div>
 
-            {/* Divider */}
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-white/10"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-slate-900 text-slate-400">New to our community?</span>
-              </div>
-            </div>
-
-            {/* Sign Up Link */}
-            <div className="text-center">
-              <Link 
-                to="/signup" 
-                className="inline-flex items-center space-x-2 text-cyan-400 hover:text-cyan-300 font-semibold transition-all duration-300 group"
-              >
-                <span>Create your account</span>
-                <FaArrowRight className="text-sm group-hover:translate-x-1 transition-transform duration-300" />
-              </Link>
-            </div>
-          </form>
-        </div>
-
-        {/* Security Notice */}
-        <div className="text-center">
-          <p className="text-slate-400 text-sm flex items-center justify-center space-x-2">
-            <FaLock className="text-slate-500 text-xs" />
-            <span>Your data is securely encrypted and protected</span>
-          </p>
-        </div>
-      </div>
+          <div className="text-center">
+            <Link
+              to="/"
+              className="text-teal-600 hover:text-teal-500 font-medium"
+            >
+              ← Back to Home
+            </Link>
+          </div>
+        </form>
+      </motion.div>
     </div>
   );
-}
+};
+
+export default Login;

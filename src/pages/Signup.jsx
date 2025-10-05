@@ -1,19 +1,40 @@
+// src/pages/Signup.jsx
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
-import { FaUser, FaEnvelope, FaLock, FaCheck, FaArrowRight, FaSpinner, FaUserPlus } from 'react-icons/fa';
+import { Link, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { 
+  FaUser, 
+  FaEnvelope, 
+  FaLock, 
+  FaEye, 
+  FaEyeSlash, 
 
-export default function Signup() {
+  FaMapMarkerAlt 
+} from 'react-icons/fa';
+
+const Signup = () => {
   const [formData, setFormData] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    income: '',
+    incomeType: 'annual',
+    state: ''
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  
-  const { signup } = useAuth();
+  const navigate = useNavigate();
+
+  const nigerianStates = [
+    'Abia', 'Adamawa', 'Akwa Ibom', 'Anambra', 'Bauchi', 'Bayelsa', 'Benue', 'Borno',
+    'Cross River', 'Delta', 'Ebonyi', 'Edo', 'Ekiti', 'Enugu', 'FCT', 'Gombe',
+    'Imo', 'Jigawa', 'Kaduna', 'Kano', 'Katsina', 'Kebbi', 'Kogi', 'Kwara',
+    'Lagos', 'Nasarawa', 'Niger', 'Ogun', 'Ondo', 'Osun', 'Oyo', 'Plateau',
+    'Rivers', 'Sokoto', 'Taraba', 'Yobe', 'Zamfara'
+  ];
 
   const handleChange = (e) => {
     setFormData({
@@ -22,258 +43,282 @@ export default function Signup() {
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setError('');
 
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match. Please ensure both passwords are identical.');
+      setError('Passwords do not match');
       return;
     }
 
     if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters long for security.');
+      setError('Password must be at least 6 characters long');
       return;
     }
 
-    setIsLoading(true);
-
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Save user to localStorage
+    const users = JSON.parse(localStorage.getItem('taxUsers') || '[]');
     
-    const success = signup({
-      name: formData.name,
-      email: formData.email,
-      password: formData.password
-    });
-
-    if (!success) {
-      setError('An account with this email address already exists. Please try logging in instead.');
+    if (users.find(u => u.email === formData.email)) {
+      setError('User with this email already exists');
+      return;
     }
+
+    const newUser = {
+      id: Date.now(),
+      ...formData
+    };
+
+    users.push(newUser);
+    localStorage.setItem('taxUsers', JSON.stringify(users));
+    localStorage.setItem('taxUser', JSON.stringify(newUser));
     
-    setIsLoading(false);
+    navigate('/dashboard');
   };
 
-  const passwordStrength = formData.password.length > 0 ? 
-    (formData.password.length >= 8 ? 'strong' : 
-     formData.password.length >= 6 ? 'medium' : 'weak') : 'empty';
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        {/* Header Section */}
-        <div className="text-center">
-          <div className="mx-auto w-20 h-20 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-2xl flex items-center justify-center mb-6 shadow-2xl">
-            <FaUserPlus className="text-white text-2xl" />
+    <div className="min-h-screen bg-gradient-to-br from-teal-100 via-white to-cyan-700 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="max-w-2xl w-full bg-white rounded-2xl shadow-xl overflow-hidden"
+      >
+        <div className="md:flex">
+          <div className="md:w-1/2 bg-gradient-to-br from-teal-600 to-teal-800 p-8 text-white">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <h2 className="text-3xl font-bold mb-4">Start Your Tax Journey</h2>
+              <p className="text-teal-100 mb-6">
+                Create your account and get access to Nigerian tax preparation tools.
+              </p>
+              <ul className="space-y-3">
+                <li className="flex items-center">
+                  <FaUser className="h-5 w-5 mr-3" />
+                  Personal tax profile
+                </li>
+                <li className="flex items-center">
+                  <FaUser className="h-5 w-5 mr-3" />
+                  Income tracking
+                </li>
+                <li className="flex items-center">
+                  <FaMapMarkerAlt className="h-5 w-5 mr-3" />
+                  State-specific calculations
+                </li>
+              </ul>
+            </motion.div>
           </div>
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent mb-3">
-            Join Our Community
-          </h2>
-          <p className="text-slate-300 text-lg">Create your account and start sharing</p>
-        </div>
 
-        {/* Signup Form */}
-        <div className="bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 p-8 hover:bg-white/10 transition-all duration-300">
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <div className="md:w-1/2 p-8">
+            <div className="text-center mb-6">
+              <h2 className="text-3xl font-extrabold text-gray-900">
+                Create Account
+              </h2>
+              <p className="mt-2 text-sm text-gray-600">
+                Already have an account?{' '}
+                <Link
+                  to="/login"
+                  className="font-medium text-teal-600 hover:text-teal-500"
+                >
+                  Sign in
+                </Link>
+              </p>
+            </div>
+
             {error && (
-              <div className="bg-red-500/20 border border-red-400/50 text-red-200 px-4 py-4 rounded-xl backdrop-blur-sm">
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-red-400 rounded-full"></div>
-                  <span className="font-medium">Registration Error</span>
-                </div>
-                <p className="text-sm mt-1 text-red-100">{error}</p>
-              </div>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg mb-4"
+              >
+                {error}
+              </motion.div>
             )}
 
-            <div className="space-y-5">
-              {/* Name Input */}
-              <div className="space-y-2">
-                <label htmlFor="name" className="text-sm font-semibold text-slate-200 flex items-center space-x-2">
-                  <FaUser className="text-cyan-400 text-sm" />
-                  <span>Full Name</span>
-                </label>
-                <div className="relative">
+            <form className="space-y-4" onSubmit={handleSubmit}>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    First Name
+                  </label>
                   <input
-                    id="name"
-                    name="name"
+                    name="firstName"
                     type="text"
-                    autoComplete="name"
                     required
-                    value={formData.name}
+                    value={formData.firstName}
                     onChange={handleChange}
-                    className="w-full px-4 py-4 pl-11 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all duration-300"
-                    placeholder="Enter your full name"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                   />
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <FaUser className="text-slate-400 text-lg" />
-                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Last Name
+                  </label>
+                  <input
+                    name="lastName"
+                    type="text"
+                    required
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                  />
                 </div>
               </div>
 
-              {/* Email Input */}
-              <div className="space-y-2">
-                <label htmlFor="email" className="text-sm font-semibold text-slate-200 flex items-center space-x-2">
-                  <FaEnvelope className="text-cyan-400 text-sm" />
-                  <span>Email Address</span>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Email Address
                 </label>
                 <div className="relative">
+                  <FaEnvelope className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                   <input
-                    id="email"
                     name="email"
                     type="email"
-                    autoComplete="email"
                     required
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full px-4 py-4 pl-11 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all duration-300"
-                    placeholder="Enter your email address"
+                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                   />
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <FaEnvelope className="text-slate-400 text-lg" />
-                  </div>
                 </div>
               </div>
 
-              {/* Password Input */}
-              <div className="space-y-2">
-                <label htmlFor="password" className="text-sm font-semibold text-slate-200 flex items-center space-x-2">
-                  <FaLock className="text-cyan-400 text-sm" />
-                  <span>Password</span>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Password
                 </label>
                 <div className="relative">
+                  <FaLock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                   <input
-                    id="password"
                     name="password"
-                    type="password"
-                    autoComplete="new-password"
+                    type={showPassword ? 'text' : 'password'}
                     required
                     value={formData.password}
                     onChange={handleChange}
-                    className="w-full px-4 py-4 pl-11 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all duration-300"
-                    placeholder="Create a secure password"
+                    className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                   />
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <FaLock className="text-slate-400 text-lg" />
-                  </div>
+                  <button
+                    type="button"
+                    className="absolute right-3 top-3"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <FaEyeSlash className="h-4 w-4 text-gray-400" />
+                    ) : (
+                      <FaEye className="h-4 w-4 text-gray-400" />
+                    )}
+                  </button>
                 </div>
-                
-                {/* Password Strength Indicator */}
-                {formData.password && (
-                  <div className="mt-3">
-                    <div className="flex items-center justify-between text-xs text-slate-400 mb-2">
-                      <span>Password strength:</span>
-                      <span className={
-                        passwordStrength === 'strong' ? 'text-green-400 font-semibold' :
-                        passwordStrength === 'medium' ? 'text-amber-400 font-semibold' :
-                        'text-red-400 font-semibold'
-                      }>
-                        {passwordStrength === 'strong' ? 'Strong' : 
-                         passwordStrength === 'medium' ? 'Medium' : 'Weak'}
-                      </span>
-                    </div>
-                    <div className="w-full bg-white/10 rounded-full h-2">
-                      <div 
-                        className={`h-2 rounded-full transition-all duration-500 ${
-                          passwordStrength === 'strong' ? 'bg-green-400 w-full' :
-                          passwordStrength === 'medium' ? 'bg-amber-400 w-2/3' :
-                          'bg-red-400 w-1/3'
-                        }`}
-                      ></div>
-                    </div>
-                  </div>
-                )}
               </div>
 
-              {/* Confirm Password Input */}
-              <div className="space-y-2">
-                <label htmlFor="confirmPassword" className="text-sm font-semibold text-slate-200 flex items-center space-x-2">
-                  <FaLock className="text-cyan-400 text-sm" />
-                  <span>Confirm Password</span>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Confirm Password
                 </label>
                 <div className="relative">
+                  <FaLock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                   <input
-                    id="confirmPassword"
                     name="confirmPassword"
-                    type="password"
-                    autoComplete="new-password"
+                    type={showConfirmPassword ? 'text' : 'password'}
                     required
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    className="w-full px-4 py-4 pl-11 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all duration-300"
-                    placeholder="Confirm your password"
+                    className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                   />
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <FaLock className="text-slate-400 text-lg" />
+                  <button
+                    type="button"
+                    className="absolute right-3 top-3"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    {showConfirmPassword ? (
+                      <FaEyeSlash className="h-4 w-4 text-gray-400" />
+                    ) : (
+                      <FaEye className="h-4 w-4 text-gray-400" />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Annual Income (₦)
+                  </label>
+                  <div className="relative">
+                    <FaUser className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                    <input
+                      name="income"
+                      type="number"
+                      required
+                      value={formData.income}
+                      onChange={handleChange}
+                      className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                      placeholder="0.00"
+                    />
                   </div>
                 </div>
-                
-                {/* Password Match Indicator */}
-                {formData.confirmPassword && (
-                  <div className="mt-2 flex items-center space-x-2">
-                    {formData.password === formData.confirmPassword ? (
-                      <>
-                        <FaCheck className="text-green-400 text-sm" />
-                        <span className="text-green-400 text-sm font-medium">Passwords match</span>
-                      </>
-                    ) : (
-                      <>
-                        <div className="w-2 h-2 bg-red-400 rounded-full"></div>
-                        <span className="text-red-400 text-sm font-medium">Passwords do not match</span>
-                      </>
-                    )}
-                  </div>
-                )}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Income Type
+                  </label>
+                  <select
+                    name="incomeType"
+                    value={formData.incomeType}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                  >
+                    <option value="annual">Annual</option>
+                    <option value="monthly">Monthly</option>
+                  </select>
+                </div>
               </div>
-            </div>
 
-          
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 disabled:from-slate-600 disabled:to-slate-700 disabled:cursor-not-allowed text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] disabled:scale-100 group relative overflow-hidden"
-            >
-              <div className="relative z-10 flex items-center justify-center space-x-3">
-                {isLoading ? (
-                  <>
-                    <FaSpinner className="animate-spin text-lg" />
-                    <span className="text-lg">Creating Account...</span>
-                  </>
-                ) : (
-                  <>
-                    <span className="text-lg">Create Account</span>
-                    <FaArrowRight className="text-sm group-hover:translate-x-1 transition-transform duration-300" />
-                  </>
-                )}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  State of Residence
+                </label>
+                <div className="relative">
+                  <FaMapMarkerAlt className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                  <select
+                    name="state"
+                    required
+                    value={formData.state}
+                    onChange={handleChange}
+                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 appearance-none"
+                  >
+                    <option value="">Select State</option>
+                    {nigerianStates.map(state => (
+                      <option key={state} value={state}>{state}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
-              
-              {/* Shine effect */}
-              <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full group-hover:duration-1000 duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform" />
-            </button>
 
-            {/* Divider */}
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-white/10"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-slate-900 text-slate-400">Already a member?</span>
-              </div>
-            </div>
-
-            {/* Login Link */}
-            <div className="text-center">
-              <Link 
-                to="/login" 
-                className="inline-flex items-center space-x-2 text-cyan-400 hover:text-cyan-300 font-semibold transition-all duration-300 group"
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                type="submit"
+                className="w-full bg-teal-600 hover:bg-teal-700 text-white py-3 px-4 rounded-lg font-semibold transition duration-300"
               >
-                <span>Sign in to your account</span>
-                <FaArrowRight className="text-sm group-hover:translate-x-1 transition-transform duration-300" />
-              </Link>
-            </div>
-          </form>
+                Create Account
+              </motion.button>
+
+              <div className="text-center">
+                <Link
+                  to="/"
+                  className="text-teal-600 hover:text-teal-500 font-medium"
+                >
+                  ← Back to Home
+                </Link>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
-}
+};
+
+export default Signup;

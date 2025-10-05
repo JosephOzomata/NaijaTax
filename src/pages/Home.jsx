@@ -1,199 +1,481 @@
-// src/pages/Home.js
+// src/pages/Home.jsx
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
-import { FaArrowUp } from "react-icons/fa6";
-import { FaHeart, FaRegHeart, FaComment, FaArrowRight, FaArrowsAlt, FaPlus } from 'react-icons/fa';
+import { Link, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { 
+  FaCalculator, 
+  FaShieldAlt, 
+  FaClock, 
+  FaMoneyBillWave, 
+  FaChartLine,
+  FaAward,
+  FaUsers,
+  FaRocket,
+  FaSync,
+  FaCheck,
+  FaCity,
+  FaStar,
+  FaMapMarkerAlt
+} from 'react-icons/fa';
 
-export default function Home() {
-  const [posts, setPosts] = useState([]);
-  const { user } = useAuth();
+const Home = () => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const location = useLocation()
 
-  useEffect(() => {
-    loadPosts();
-  }, []);
+    useEffect(() => {
+        const user = localStorage.getItem('taxUser');
+        setIsLoggedIn(!!user);
+      }, [location]);
 
-  const loadPosts = () => {
-    const allPosts = JSON.parse(localStorage.getItem('socialMediaPosts') || '[]');
-    const users = JSON.parse(localStorage.getItem('socialMediaUsers') || '[]');
-    
-    // Add user data to posts
-    const postsWithUsers = allPosts.map(post => {
-      const postUser = users.find(u => u.id === post.userId);
-      return {
-        ...post,
-        user: postUser ? { name: postUser.name, email: postUser.email } : { name: 'Unknown User' }
-      };
-    }).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    
-    setPosts(postsWithUsers);
-  };
+  const features = [
+    {
+      icon: <FaCalculator className="h-12 w-12 text-teal-600" />,
+      title: "Easy Tax Calculation",
+      description: "Calculate your Nigerian taxes quickly with our simple interface"
+    },
+    {
+      icon: <FaShieldAlt className="h-12 w-12 text-teal-600" />,
+      title: "FIRS Compliant",
+      description: "Follows Federal Inland Revenue Service guidelines and regulations"
+    },
+    {
+      icon: <FaClock className="h-12 w-12 text-teal-600" />,
+      title: "Time Saving",
+      description: "Complete your tax filing 5x faster than manual methods"
+    },
+    {
+      icon: <FaMoneyBillWave className="h-12 w-12 text-teal-600" />,
+      title: "Maximize Returns",
+      description: "Identify all eligible allowances and reliefs under Nigerian law"
+    }
+  ];
 
-  const likePost = (postId) => {
-    const allPosts = JSON.parse(localStorage.getItem('socialMediaPosts') || '[]');
-    const updatedPosts = allPosts.map(post => {
-      if (post.id === postId) {
-        const isLiked = post.likes?.includes(user.id);
-        return {
-          ...post,
-          likes: isLiked 
-            ? post.likes.filter(id => id !== user.id)
-            : [...(post.likes || []), user.id]
-        };
-      }
-      return post;
-    });
-    
-    localStorage.setItem('socialMediaPosts', JSON.stringify(updatedPosts));
-    loadPosts();
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
+  const stats = [
+    { number: "25K+", label: "Nigerian Users" },
+    { number: "₦1.8B+", label: "Taxes Processed" },
+    { number: "98.7%", label: "Accuracy Rate" },
+    { number: "36 States", label: "Covered Nationwide" }
+  ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
-      <div className="max-w-4xl mx-auto py-8 px-4">
-        {/* Header Section */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent mb-4">
-            Community Feed
-          </h1>
-          <p className="text-slate-300 text-lg">Discover what's happening in your network</p>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-white">
+      {/* Hero Section */}
+      
 
-        {/* Create Post CTA */}
-        <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-6 mb-8 hover:bg-white/10 transition-all duration-300">
-          <Link 
-            to="/create-post"
-            className="flex items-center justify-center space-x-3 group"
+<section className="relative py-20 px-4 overflow-hidden bg-gradient-to-br from-teal-100 via-white to-cyan-700">
+  {/* Animated Background Elements */}
+  <div className="absolute inset-0">
+    {/* Floating Shapes */}
+    <motion.div
+      initial={{ opacity: 0, scale: 0 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 1, delay: 0.5 }}
+      className="absolute top-10 left-10 w-20 h-20 bg-teal-200 rounded-full blur-sm"
+    />
+    <motion.div
+      initial={{ opacity: 0, scale: 0 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 1, delay: 0.7 }}
+      className="absolute top-20 right-20 w-16 h-16 bg-cyan-200 rounded-full blur-sm"
+    />
+    <motion.div
+      initial={{ opacity: 0, scale: 0 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 1, delay: 0.9 }}
+      className="absolute bottom-20 left-20 w-24 h-24 bg-emerald-200 rounded-full blur-sm"
+    />
+    
+    {/* Animated Grid Pattern */}
+    <div className="absolute inset-0 opacity-10">
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-teal-100 to-transparent animate-pulse" />
+    </div>
+  </div>
+
+  <div className="max-w-7xl mx-auto relative z-10">
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      className="text-center"
+    >
+      {/* Animated Badge */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6, delay: 0.3 }}
+        className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-teal-200 rounded-full px-6 py-3 mb-8 shadow-lg"
+      >
+        <motion.div
+          animate={{ rotate: [0, 10, -10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="text-teal-500"
+        >
+          <FaStar className="w-4 h-4" />
+        </motion.div>
+        <span className="text-sm font-semibold text-teal-700">
+          Trusted by 25,000+ Nigerian Taxpayers
+        </span>
+      </motion.div>
+
+      {/* Main Heading with Staggered Animation */}
+      <div className="mb-6">
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-5xl md:text-7xl lg:text-8xl font-bold text-gray-900 mb-4"
+        >
+          Nigerian{" "}
+          <motion.span
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-teal-600 bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent"
           >
-            <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <FaPlus className="text-white text-lg" />
-            </div>
-            <div className="text-left">
-              <h3 className="text-white font-semibold text-lg">Share your thoughts</h3>
-              <p className="text-slate-400 text-sm">Create a new post with the community</p>
-            </div>
-          </Link>
-        </div>
+            Tax Made
+          </motion.span>
+        </motion.h1>
+        
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="flex items-center justify-center gap-4"
+        >
+          
+          <span className="text-5xl md:text-7xl lg:text-8xl font-bold text-gray-900">
+            Simple
+          </span>
+          
+        </motion.div>
+      </div>
 
-        {/* Posts Grid */}
-        {posts.length === 0 ? (
-          <div className="text-center py-16 bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10">
-            <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full flex items-center justify-center mx-auto mb-6">
-              <FaPlus className="text-2xl" />
-            </div>
-            <h3 className="text-2xl font-semibold text-white mb-3">No posts yet</h3>
-            <p className="text-slate-400 mb-6">Be the first to share something amazing!</p>
-            <Link
-              to="/create-post"
-              className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 text-white font-semibold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105"
+      {/* Animated Subtitle */}
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.8 }}
+        className="text-xl md:text-2xl lg:text-3xl text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed"
+      >
+        Easy tax preparation for individuals and small businesses in{" "}
+        <motion.span
+          animate={{ 
+            background: ["linear-gradient(45deg, #0d9488, #0891b2)", "linear-gradient(45deg, #0891b2, #0d9488)"]
+          }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="font-semibold bg-clip-text text-transparent bg-gradient-to-r from-teal-600 to-cyan-600"
+        >
+          Nigeria
+        </motion.span>
+        . FIRS compliant and absolutely hassle-free.
+      </motion.p>
+
+      {/* Feature Pills */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 1 }}
+        className="flex flex-wrap justify-center gap-3 mb-12"
+      >
+        {[
+          { text: "FIRS Compliant", icon: FaShieldAlt },
+          { text: "100% Secure", icon: FaShieldAlt },
+          { text: "5-Minute Setup", icon: FaClock },
+          { text: "Auto Calculations", icon: FaCalculator }
+        ].map((feature, index) => (
+          <motion.span
+            key={feature.text}
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, delay: 1.2 + index * 0.1 }}
+            whileHover={{ scale: 1.05 }}
+            className="bg-white/80 backdrop-blur-sm border border-teal-200 text-teal-700 px-4 py-2 rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-2"
+          >
+            <FaCheck className="w-3 h-3 text-green-500" />
+            <feature.icon className="w-3 h-3" />
+            {feature.text}
+          </motion.span>
+        ))}
+      </motion.div>
+
+      {/* CTA Buttons with Enhanced Animation */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 1.4 }}
+        className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+      >
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <Link
+            to="/signup"
+            className="group relative bg-teal-600 hover:bg-teal-700 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-3 overflow-hidden"
+          >
+            <motion.div
+              animate={{ x: [0, 5, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
             >
-              <FaPlus />
-              <span>Create First Post</span>
-            </Link>
+              <FaRocket className="w-5 h-5" />
+            </motion.div>
+            Get Started Free
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"
+            />
+          </Link>
+        </motion.div>
+
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <Link
+            to="/login"
+            className="group bg-white/80 backdrop-blur-sm border-2 border-teal-600 text-teal-600 hover:bg-teal-600 hover:text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-3"
+          >
+            <motion.div
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+            >
+              <FaSync className="w-5 h-5" />
+            </motion.div>
+            Existing User
+          </Link>
+        </motion.div>
+      </motion.div>
+
+      {/* Trust Indicators */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: 1.6 }}
+        className="mt-16"
+      >
+        <p className="text-gray-500 text-sm mb-6 flex items-center justify-center gap-2">
+          <FaUsers className="w-4 h-4" />
+          Trusted by businesses across Nigeria
+        </p>
+        
+        {/* Animated Cities */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 1.8 }}
+          className="flex flex-wrap justify-center items-center gap-8 opacity-60"
+        >
+          {[
+            { label: "Lagos", icon: FaCity },
+            { label: "Abuja", icon: FaMapMarkerAlt },
+            { label: "Port Harcourt", icon: FaCity },
+            { label: "Kano", icon: FaMapMarkerAlt },
+            { label: "Calabar", icon: FaCity }
+          ].map((city, index) => (
+            <motion.div
+              key={city.label}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, delay: 2 + index * 0.1 }}
+              whileHover={{ scale: 1.1, opacity: 1 }}
+              className="flex items-center gap-2 text-gray-600 font-medium"
+            >
+              <city.icon className="w-4 h-4 text-teal-500" />
+              <span>{city.label}</span>
+            </motion.div>
+          ))}
+        </motion.div>
+      </motion.div>
+
+      {/* Floating Action Card */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 2.2 }}
+        className="absolute -bottom-20 left-1/2 transform -translate-x-1/2"
+      >
+        <motion.div
+          animate={{ y: [0, -10, 0] }}
+          transition={{ duration: 3, repeat: Infinity }}
+          className="bg-white/90 backdrop-blur-sm border border-teal-200 rounded-2xl p-4 shadow-2xl"
+        >
+          <div className="flex items-center gap-3">
+            <motion.div
+              animate={{ scale: [1, 1.2, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="w-3 h-3 bg-green-500 rounded-full"
+            />
+            <span className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+              <FaCalculator className="w-4 h-4 text-teal-500" />
+              Real-time tax calculations • Live support
+            </span>
           </div>
-        ) : (
-          <div className="grid gap-6">
-            {posts.map((post) => (
-              <div 
-                key={post.id} 
-                className="bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 p-6 hover:bg-white/10 hover:border-white/20 transition-all duration-300 group"
+        </motion.div>
+      </motion.div>
+    </motion.div>
+  </div>
+
+  {/* Animated Background Pattern */}
+  <div className="absolute inset-0 overflow-hidden">
+    <motion.div
+      animate={{ 
+        rotate: [0, 360],
+        scale: [1, 1.1, 1]
+      }}
+      transition={{ 
+        rotate: { duration: 20, repeat: Infinity, ease: "linear" },
+        scale: { duration: 4, repeat: Infinity }
+      }}
+      className="absolute -top-1/2 -right-1/2 w-full h-full opacity-5"
+    >
+      <div className="w-full h-full bg-gradient-conic from-teal-400 via-cyan-400 to-teal-400" />
+    </motion.div>
+  </div>
+</section>
+
+      {/* Features Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Why Choose NaijaTax?
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Built specifically for Nigerian taxpayers with local tax laws in
+              mind
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {features.map((feature, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ scale: 1.05 }}
+                className="bg-white p-8 rounded-xl shadow-lg border border-gray-100 text-center"
               >
-                {/* Post Header */}
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full flex items-center justify-center shadow-lg">
-                      <span className="text-white font-bold text-sm">
-                        {post.user.name.charAt(0).toUpperCase()}
-                      </span>
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-white text-lg">{post.user.name}</h3>
-                      <p className="text-slate-400 text-sm">
-                        {new Date(post.createdAt).toLocaleDateString('en-US', {
-                          month: 'short',
-                          day: 'numeric',
-                          year: 'numeric'
-                        })}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="text-slate-400 text-sm">
-                    {Math.floor((Date.now() - new Date(post.createdAt).getTime()) / (1000 * 60 * 60)) < 24 
-                      ? `${Math.floor((Date.now() - new Date(post.createdAt).getTime()) / (1000 * 60 * 60))}h ago`
-                      : `${Math.floor((Date.now() - new Date(post.createdAt).getTime()) / (1000 * 60 * 60 * 24))}d ago`
-                    }
-                  </div>
-                </div>
-                <Link to={`/post/${post.id}`} className="block mb-6 group">
-                  <h2 className="text-2xl font-bold text-white mb-4 group-hover:text-cyan-300 transition-colors duration-300">
-                    {post.title}
-                  </h2>
-                  <p className="text-slate-300 leading-relaxed text-lg line-clamp-3">
-                    {post.content}
-                  </p>
-                </Link>
-
-                {post.image && (
-                  <div className="mb-6 rounded-xl overflow-hidden border border-white/10">
-                    <img
-                      src={post.image}
-                      alt="Post"
-                      className="w-full h-64 object-cover hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                )}
-
-                <div className="flex items-center justify-between pt-6 border-t border-white/10">
-                  <div className="flex items-center space-x-6">
-                    <button
-                      onClick={() => likePost(post.id)}
-                      className={`flex items-center space-x-2 transition-all duration-300 ${
-                        post.likes?.includes(user.id)
-                          ? 'text-red-400 transform scale-110'
-                          : 'text-slate-400 hover:text-red-400 hover:scale-110'
-                      }`}
-                    >
-                      {post.likes?.includes(user.id) ? (
-                        <FaHeart className="text-lg" />
-                      ) : (
-                        <FaRegHeart className="text-lg" />
-                      )}
-                      <span className="font-medium">{post.likes?.length || 0}</span>
-                    </button>
-
-                    <Link
-                      to={`/post/${post.id}`}
-                      className="flex items-center space-x-2 text-slate-400 hover:text-cyan-400 transition-all duration-300 hover:scale-105"
-                    >
-                      <FaComment className="text-lg" />
-                      <span className="font-medium">{post.comments?.length || 0}</span>
-                    </Link>
-                  </div>
-
-                  <Link
-                    to={`/post/${post.id}`}
-                    className="flex items-center space-x-2 bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white font-medium py-2 px-4 rounded-full transition-all duration-300 group-hover:bg-cyan-500 group-hover:text-white"
-                  >
-                    <span>Read More</span>
-                    <FaArrowRight className="text-sm group-hover:translate-x-1 transition-transform duration-300" />
-                  </Link>
-                </div>
-              </div>
+                <div className="flex justify-center mb-4">{feature.icon}</div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-600">{feature.description}</p>
+              </motion.div>
             ))}
           </div>
-        )}
-
-        <div onClick={scrollToTop} className='bg-white/5 cursor-pointer hover:bg-white/20 z-50 transition duration-150 backdrop-blur-lg  rounded-full fixed bottom-2 right-2'>
-          <FaArrowUp className='m-3 text-2xl' />
         </div>
-      </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-16 bg-gradient-to-r from-teal-600 to-teal-800">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {stats.map((stat, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.5 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ delay: index * 0.1 }}
+                className="text-center text-white"
+              >
+                <div className="text-4xl md:text-5xl font-bold mb-2">
+                  {stat.number}
+                </div>
+                <div className="text-lg opacity-90">{stat.label}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Info Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
+          >
+            <div>
+              <h2 className="text-4xl font-bold text-gray-900 mb-6">
+                Nigerian Tax Solutions
+              </h2>
+              <div className="space-y-4">
+                <div className="flex items-start space-x-4">
+                  <FaAward className="h-6 w-6 text-teal-500 mt-1" />
+                  <div>
+                    <h3 className="text-xl font-semibold mb-2">
+                      FIRS Compliant
+                    </h3>
+                    <p className="text-gray-600">
+                      All calculations follow Federal Inland Revenue Service
+                      guidelines and current tax laws.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-4">
+                  <FaUsers className="h-6 w-6 text-teal-500 mt-1" />
+                  <div>
+                    <h3 className="text-xl font-semibold mb-2">Easy to Use</h3>
+                    <p className="text-gray-600">
+                      Designed for all Nigerians - from employees to small
+                      business owners.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-4">
+                  <FaMapMarkerAlt className="h-6 w-6 text-teal-500 mt-1" />
+                  <div>
+                    <h3 className="text-xl font-semibold mb-2">
+                      Nationwide Coverage
+                    </h3>
+                    <p className="text-gray-600">
+                      Supports taxpayers across all 36 states and the Federal
+                      Capital Territory.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="bg-gradient-to-br from-teal-500 to-teal-700 rounded-2xl p-8 text-white"
+            >
+              <h3 className="text-2xl font-bold mb-4">
+                Ready to File Your Taxes?
+              </h3>
+              <p className="text-lg m b-6 opacity-90">
+                Join thousands of Nigerians simplifying their tax preparation
+                process.
+              </p>
+
+              {isLoggedIn && (
+                <Link
+                  to="/application"
+                  className="bg-white text-teal-600 hover:bg-teal-50 px-8 py-2 rounded-lg font-semibold transition duration-300 inline-block"
+                >
+                  Calculate Tax
+                </Link>
+              )}
+
+              {!isLoggedIn && (
+                <Link
+                  to="/signup"
+                  className="bg-white text-teal-600 hover:bg-teal-50 px-8 py-3 rounded-lg font-semibold transition duration-300 inline-block"
+                >
+                  Create Your Account
+                </Link>
+              )}
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
     </div>
   );
-}
+};
+
+export default Home;
