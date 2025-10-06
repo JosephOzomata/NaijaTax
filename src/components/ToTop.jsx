@@ -6,7 +6,7 @@ import { IoIosArrowUp } from "react-icons/io";
 const ToTop = () => {
     const [isVisible, setIsVisible] = useState(false);
 
-    // Show button when user scrolls down
+    
     useEffect(() => {
       const toggleVisibility = () => {
         if (window.scrollY > 200) {

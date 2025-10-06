@@ -59,13 +59,12 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 to-white">
-      {/* Hero Section */}
       
 
 <section className="relative py-20 px-4 overflow-hidden bg-gradient-to-br from-teal-100 via-white to-cyan-700">
-  {/* Animated Background Elements */}
+  
   <div className="absolute inset-0">
-    {/* Floating Shapes */}
+  
     <motion.div
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}
@@ -85,7 +84,7 @@ const Home = () => {
       className="absolute bottom-20 left-20 w-24 h-24 bg-emerald-200 rounded-full blur-sm"
     />
     
-    {/* Animated Grid Pattern */}
+    
     <div className="absolute inset-0 opacity-10">
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-teal-100 to-transparent animate-pulse" />
     </div>
@@ -98,7 +97,7 @@ const Home = () => {
       transition={{ duration: 0.8 }}
       className="text-center"
     >
-      {/* Animated Badge */}
+  
       <motion.div
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -117,7 +116,7 @@ const Home = () => {
         </span>
       </motion.div>
 
-      {/* Main Heading with Staggered Animation */}
+  
       <div className="mb-6">
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
@@ -150,7 +149,7 @@ const Home = () => {
         </motion.div>
       </div>
 
-      {/* Animated Subtitle */}
+  
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -160,7 +159,7 @@ const Home = () => {
         Easy tax preparation for individuals and small businesses in{" "}
         <motion.span
           animate={{ 
-            // background: ["linear-gradient(45deg, #0d9488, #0891b2)", "linear-gradient(45deg, #0891b2, #0d9488)"]
+  
           }}
           transition={{ duration: 2, repeat: Infinity }}
           className="font-semibold bg-clip-text text-White bg-gradient-to-r from-teal-600 to-cyan-600"
@@ -170,7 +169,7 @@ const Home = () => {
         . FIRS compliant and absolutely hassle-free.
       </motion.p>
 
-      {/* Feature Pills */}
+  
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -198,7 +197,7 @@ const Home = () => {
         ))}
       </motion.div>
 
-      {/* CTA Buttons with Enhanced Animation */}
+  
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -245,7 +244,7 @@ const Home = () => {
         </motion.div>
       </motion.div>
 
-      {/* Trust Indicators */}
+      
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -257,7 +256,7 @@ const Home = () => {
           Trusted by businesses across Nigeria
         </p>
         
-        {/* Animated Cities */}
+      
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -286,35 +285,12 @@ const Home = () => {
         </motion.div>
       </motion.div>
 
-      {/* Floating Action Card */}
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 2.2 }}
-        className="absolute -bottom-20 left-1/2 transform -translate-x-1/2"
-      >
-        <motion.div
-          animate={{ y: [0, -10, 0] }}
-          transition={{ duration: 3, repeat: Infinity }}
-          className="bg-white/90 backdrop-blur-sm border border-teal-200 rounded-2xl p-4 shadow-2xl"
-        >
-          <div className="flex items-center gap-3">
-            <motion.div
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="w-3 h-3 bg-green-500 rounded-full"
-            />
-            <span className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-              <FaCalculator className="w-4 h-4 text-teal-500" />
-              Real-time tax calculations • Live support
-            </span>
-          </div>
-        </motion.div>
-      </motion.div>
+      
+      
     </motion.div>
   </div>
 
-  {/* Animated Background Pattern */}
+  
   <div className="absolute inset-0 overflow-hidden">
     <motion.div
       animate={{ 
@@ -331,8 +307,6 @@ const Home = () => {
     </motion.div>
   </div>
 </section>
-
-      {/* Features Section */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <motion.div
@@ -370,7 +344,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
+    
       <section className="py-16 bg-gradient-to-r from-teal-600 to-teal-800">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -392,7 +366,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Info Section */}
+    
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <motion.div

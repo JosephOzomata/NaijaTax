@@ -46,7 +46,7 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 mt-18 sm:px-6 lg:px-8 py-8">
-        {/* Welcome Section */}
+        
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -71,10 +71,9 @@ const Dashboard = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Quick Actions */}
+          
           <div className="lg:col-span-2  flex items-center justify-center h-[100%] ">
-            {/* <h2 className="text-2xl bg-teal-700 font-bold text-gray-900 mb-6">Quick Actions</h2> */}
-            {/* <div className=" h-[100%] flex items-center justify-center"> */}
+           
              
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -88,18 +87,16 @@ const Dashboard = () => {
                     className={` flex items-center justify-center text-center bg-gradient-to-r ${action[0].color} text-white rounded-2xl w-[100%] h-[100%] shadow-lg hover:shadow-xl transition duration-300`}
                   >
                     <div className=" items-center justify-center  space-x-4">
-                      <p className='text-6xl'>{action[0].icon}</p>
-                      <div>
+                      
+                      <div className='p-3'>
                         <h3 className="text-6xl font-semibold">{action[0].title}</h3>
                         <p className="opacity-90">{action[0].description}</p>
                       </div>
                     </div>
                   </Link>
                 </motion.div>
-            {/* </div> */}
           </div>
 
-          {/* User Info Sidebar */}
           <div>
             <motion.div
               initial={{ opacity: 0, x: 20 }}

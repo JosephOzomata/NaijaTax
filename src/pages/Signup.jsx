@@ -82,9 +82,9 @@ const Signup = () => {
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="max-w-2xl w-full bg-white rounded-2xl shadow-xl overflow-hidden"
+        className="max-w-2xl mt-12 w-full bg-white rounded-2xl shadow-xl overflow-hidden"
       >
-        <div className="md:flex">
+        <div className="md:flex ">
           <div className="md:w-1/2 bg-gradient-to-br from-teal-600 to-teal-800 p-8 text-white">
             <motion.div
               initial={{ opacity: 0, x: -50 }}

@@ -474,7 +474,7 @@ const TaxApplication = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br mt-18 from-teal-50 to-white py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Progress Steps */}
+        
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -508,7 +508,7 @@ const TaxApplication = () => {
           </div>
         </motion.div>
 
-        {/* Form Container */}
+       
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -518,7 +518,7 @@ const TaxApplication = () => {
             {renderStep()}
           </AnimatePresence>
 
-          {/* Navigation Buttons */}
+        
           <div className="flex justify-between mt-8 pt-6 border-t border-gray-200">
             <motion.button
               whileHover={{ scale: 1.02 }}

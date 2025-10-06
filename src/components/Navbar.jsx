@@ -1,4 +1,3 @@
-// src/components/Navbar.jsx
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -43,14 +42,14 @@ const Navbar = () => {
     setIsOpen(false);
   };
 
-  // Navbar classes based on scroll state
+  
   const navbarClasses = `fixed top-0 w-full z-50 transition-all duration-300 ${
     isScrolled 
       ? 'bg-gradient-to-r from-teal-600 to-teal-800 shadow-lg' 
       : 'bg-transparent'
   }`;
 
-  // Text color classes based on scroll state
+  
   const textColorClass = isScrolled ? 'text-white' : 'text-teal-700';
   const hoverTextColorClass = isScrolled ? 'hover:text-teal-200' : 'hover:text-teal-900';
   const iconColorClass = isScrolled ? 'text-white' : 'text-teal-700';
@@ -72,7 +71,6 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             <Link
               to="/"
@@ -96,7 +94,7 @@ const Navbar = () => {
                   }`} />
                 </button>
 
-                {/* Dropdown Menu */}
+                
                 {isOpen && (
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
@@ -153,7 +151,7 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Mobile menu button */}
+        
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -168,7 +166,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
+      
         {mobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}

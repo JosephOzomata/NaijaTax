@@ -41,7 +41,7 @@ const Login = () => {
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="max-w-md w-full space-y-8 bg-white rounded-2xl shadow-xl p-8"
+        className="max-w-md w-full space-y-8 mt-8 bg-white rounded-2xl shadow-xl p-8"
       >
         <div>
           <div className="flex justify-center">
